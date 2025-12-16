@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import "$lib/m3.css";
     import "$lib/basics.css";
 

@@ -8,3 +8,7 @@ body {
     margin: 0 !important;
     background-color: var(--m3c-background) !important;
 }
+
+:root {
+    --rounding: 1rem;
+}
