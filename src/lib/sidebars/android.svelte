@@ -1,8 +1,16 @@
 <script lang="ts">
+    import Notification from "./notification.svelte";
+
     let wifi_on = $state(true);
     let bluetooth_on = $state(true);
     let location_on = $state(true);
     let battery_charging = $state(true);
+
+    let notifications = [
+        ["Hello 1", "This is a sample notification 1"],
+        ["Hello 2", "This is a sample notification 2"],
+        ["Hello 3", "This is a sample notification 3"],
+    ];
 </script>
 
 <div class="main">
@@ -47,7 +55,17 @@
             </div>
         </div>
     </div>
-    <div class="notifications">Notifications</div>
+    <div class="notifications">
+        {#if notifications.length === 0}
+            <div class="no-notif">
+                No Notifications
+            </div>
+        {:else}
+            {#each notifications as notif }
+            <Notification title={notif[0]} desc={notif[1]}/>      
+            {/each}
+        {/if}
+    </div>
 </div>
 
 <style>
@@ -101,14 +119,19 @@
             display: flex;
             width: 100%;
             justify-content: space-between;
+
+            img {
+                height: 1.5rem;
+            }
         }
     }
 
     .notifications {
-        padding: 1rem;
         height: 100%;
 
-        background-color: var(--m3c-surface-bright);
-        border-radius: var(--rounding);
+        .no-notif {
+            margin: auto;
+            padding-top: 1rem;
+        }
     }
 </style>
