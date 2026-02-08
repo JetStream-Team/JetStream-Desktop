@@ -2,13 +2,18 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod mdns;
+mod websocket;
+mod certs;
 
 fn main() {
     // Start the mdns service
-    let _service = mdns::start_mdns_responder("JetStream".to_string(), 8080);
+    let _service = mdns::start_mdns_responder("Mathew's JetStream".to_string(), 8080);
 
     // Start the jetstream server
+    websocket::start_server();
 
     // Run the Tauri application
     // jetstream_desktop_lib::run()
+
+    loop {}
 }
