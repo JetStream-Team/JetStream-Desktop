@@ -1,4 +1,5 @@
 use libmdns::{Responder, Service};
+use log::{self, info};
 
 static SERVICE_TYPE: &str = "_jetstream._tcp";
 
@@ -10,7 +11,7 @@ pub fn start_mdns_responder(service_name: String, port: u16) -> Service {
         port,
         &[]
     );
-    println!("Started mDNS responder ");
+    info!("Started mDNS responder for '{service_name}' on port {port}");
 
     return service;
 }

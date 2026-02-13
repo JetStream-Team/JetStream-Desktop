@@ -1,0 +1,18 @@
+syntax = "proto3";
+package jetstream;
+
+message MessageWrapper {
+    oneof message {
+        Notification notification = 1;
+        Clipboard clipboard = 2;
+    }
+}
+
+message Notification {
+    string title = 1;
+    string body = 2;
+}
+
+message Clipboard {
+    string content = 1;
+}

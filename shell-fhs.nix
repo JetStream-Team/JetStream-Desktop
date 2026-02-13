@@ -12,6 +12,7 @@
     rustfmt
     rust-analyzer
     pkg-config
+    protobuf
 
     # JS packages if using JS for UI
     nodejs
@@ -39,6 +40,10 @@
     gsettings-desktop-schemas
   ]);
 
-  runScript = "bash";
+  runScript = "nu";
+
+  profile = ''
+    export RUST_LOG="debug"
+  '';
 }).env
 
