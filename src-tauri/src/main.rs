@@ -20,7 +20,7 @@ async fn main() {
     websocket::start_server(PORT).await;
 
     // Run the Tauri application
-    // jetstream_desktop_lib::run()
+    // jetstream_desktop_lib::run();
 
     loop {}
 }

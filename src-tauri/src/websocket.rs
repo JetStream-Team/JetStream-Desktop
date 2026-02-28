@@ -1,5 +1,3 @@
-// use std::sync::Arc;
-
 use log::{debug, error, info, warn};
 // use crate::certs;
 // use rustls::ServerConfig;
@@ -51,10 +49,14 @@ pub async fn start_server(port: u16) {
 }
 
 async fn handle_connection(stream: TcpStream) {
+    // Accept the WebSocket connection using the tcp stream
     let ws_stream = accept_async(stream)
         .await.expect("Failed to accept WebSocket connection");
+
+    // Split the WebSocket stream into an inbox and outbox
     let (mut outbox, mut inbox) = ws_stream.split();
 
+    // Do this for every message received in the inbox
     while let Some(result) = inbox.next().await {
         match result {
             Ok(ws_msg) => {

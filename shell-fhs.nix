@@ -43,7 +43,7 @@
   runScript = "nu";
 
   profile = ''
-    export RUST_LOG="debug"
+    export RUST_LOG="jetstream_desktop=debug"
   '';
 }).env
 
