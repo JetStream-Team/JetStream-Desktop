@@ -11,7 +11,7 @@ pub const PORT: u16 = 8000;
 #[tokio::main]
 async fn main() {
     // Initialize logging
-    env_logger::init();
+    env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("jetstream_desktop=debug")).init();
 
     // Start the mdns service
     let _service = mdns::start_mdns_responder("Mathew's JetStream".to_string(), PORT);
