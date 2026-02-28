@@ -103,6 +103,12 @@ async fn handle_protobuf_message(data: &[u8]) {
                 Some(pb::message_wrapper::Message::Clipboard(cb)) => {
                     debug!("--- Clipboard Sync ---");
                     debug!("Content: {}", cb.content);
+                    #[cfg(target_os = "windows")]
+                    clipboard_win::set_clipboard_string(&cb.content).expect("Failed to set clipboard content");
+                    
+                    #[cfg(target_os = "linux")]
+                    info!("Clipboard sync not implemented for Linux yet. Received content: {}", cb.content);
+                    
                 }
                 None => {
                     warn!("Received an empty MessageWrapper");
