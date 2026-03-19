@@ -4,7 +4,13 @@
     import DisconnectedContent from "$lib/content/disconnected.svelte";
     import AndroidContent from "$lib/content/android.svelte";
 
-    let isConnected: Boolean = $state(true);
+    import { updateHoverMessage } from '$lib/connectionStatus';
+
+    let isConnected: boolean = $state(true);
+
+    $effect(() => {
+    updateHoverMessage(isConnected);
+  });
 </script>
 
 <div class="main">
