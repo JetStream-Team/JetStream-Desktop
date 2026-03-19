@@ -32,6 +32,7 @@
     openssl.dev
     librsvg.dev
     libappindicator-gtk3.dev
+    libayatana-appindicator
     stdenv.cc
 
     # Other required packages
