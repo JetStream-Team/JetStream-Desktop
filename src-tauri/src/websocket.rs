@@ -1,4 +1,5 @@
 use log::{debug, error, info, warn};
+// use std::collections::HashMap;
 // use crate::certs;
 // use rustls::ServerConfig;
 // use tokio_rustls::{TlsAcceptor, server::TlsStream};
@@ -7,9 +8,10 @@ use futures_util::{SinkExt, StreamExt};
 use local_ip_address::local_ip;
 use notify_rust;
 use prost::Message;
+use core::net::SocketAddr;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_tungstenite::accept_async;
-use tokio_tungstenite::tungstenite::Message as WSMessage;
+use tokio_tungstenite::tungstenite::{Message as WSMessage};
 
 #[allow(dead_code)]
 pub type WSInbox = futures_util::stream::SplitStream<tokio_tungstenite::WebSocketStream<TcpStream>>;
@@ -40,10 +42,7 @@ pub async fn start_server(port: u16) {
         .await
         .expect("Failed to bind to port {port}");
     info!("Listening on port 0.0.0.0:{port}");
-    info!(
-        "Local IP address: {:?}",
-        local_ip().expect("Failed to get local IP")
-    );
+    info!("Local IP address: {:?}", local_ip().expect("Failed to get local IP"));
 
     while let Ok((stream, addr)) = listener.accept().await {
         info!("New connection from {addr}");
@@ -52,15 +51,22 @@ pub async fn start_server(port: u16) {
         // let stream = acceptor.accept(stream)
         //     .await.expect("Failed to accept TLS connection");
 
-        tokio::spawn(async move { handle_connection(stream).await });
+        tokio::spawn(async move { handle_connection(stream, addr).await });
     }
 }
 
-async fn handle_connection(stream: TcpStream) {
+async fn handle_connection(stream: TcpStream, addr: SocketAddr) {
     // Accept the WebSocket connection using the tcp stream
     let ws_stream = accept_async(stream)
         .await
         .expect("Failed to accept WebSocket connection");
+    info!("WebSocket connection accepted");
+
+    notify_rust::Notification::new()
+        .summary("New device connected via JetStream")
+        .body(&format!("IP: {addr}"))
+        .show()
+        .unwrap();
 
     // Split the WebSocket stream into an inbox and outbox
     let (mut outbox, mut inbox) = ws_stream.split();
@@ -83,6 +89,11 @@ async fn handle_connection(stream: TcpStream) {
                 }
                 WSMessage::Close(_) => {
                     info!("Client disconnected");
+                    notify_rust::Notification::new()
+                        .summary("JetStream Device Disconnected")
+                        .body(&format!("IP: {addr}"))
+                        .show()
+                        .unwrap();
                     break;
                 }
                 _ => {}
@@ -102,13 +113,19 @@ async fn handle_protobuf_message(data: &[u8]) {
             match wrapper.message {
                 Some(pb::message_wrapper::Message::Notification(notif)) => {
                     debug!("--- Notification Received ---");
-                    debug!("Title: {}", notif.title);
-                    debug!("Body:  {}", notif.body);
-                    notify_rust::Notification::new()
+                    debug!("Create: {}", notif.create);
+                    debug!("Id:     {}", notif.id);
+                    debug!("Title:  {}", notif.title);
+                    debug!("Body:   {}", notif.body);
+                    if notif.create {
+                        let _handle = notify_rust::Notification::new()
                         .summary(&notif.title)
                         .body(&notif.body)
                         .show()
                         .unwrap();
+                    } else {
+                        // TODO close the notification with the given title and body
+                    }
                 }
                 Some(pb::message_wrapper::Message::Clipboard(cb)) => {
                     debug!("--- Clipboard Sync ---");
