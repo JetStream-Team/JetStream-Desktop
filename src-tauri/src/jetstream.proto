@@ -1,6 +1,9 @@
 syntax = "proto3";
 package jetstream;
 
+option java_package = "com.jetstream.android.proto";
+option java_multiple_files = true;
+
 message MessageWrapper {
     oneof message {
         Notification notification = 1;
@@ -9,8 +12,10 @@ message MessageWrapper {
 }
 
 message Notification {
-    string title = 1;
-    string body = 2;
+    bool create = 1;
+    int32 id = 2;
+    string title = 3;
+    string body = 4;
 }
 
 message Clipboard {
