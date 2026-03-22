@@ -16,6 +16,7 @@ message Notification {
     int32 id = 2;
     string title = 3;
     string body = 4;
+    bytes icon = 5;
 }
 
 message Clipboard {

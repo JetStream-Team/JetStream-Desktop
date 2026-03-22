@@ -49,3 +49,5 @@ notify-rust = "4.12.0"
 clipboard-win = "5.4.1"
 env_logger = "0.11.9"
 log = "0.4.29"
+arboard = { version = "3.6.1", features = ["wayland-data-control"] }
+lazy_static = "1.5.0"

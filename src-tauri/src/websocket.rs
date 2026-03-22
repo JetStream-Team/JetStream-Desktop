@@ -1,4 +1,4 @@
-use log::{debug, error, info, warn};
+use log::{debug, error, info};
 // use std::collections::HashMap;
 // use crate::certs;
 // use rustls::ServerConfig;
@@ -7,7 +7,6 @@ use base64::{prelude::BASE64_STANDARD, Engine};
 use futures_util::{SinkExt, StreamExt};
 use local_ip_address::local_ip;
 use notify_rust;
-use prost::Message;
 use core::net::SocketAddr;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_tungstenite::accept_async;
@@ -21,9 +20,7 @@ pub type WSOutbox = futures_util::stream::SplitSink<
     tokio_tungstenite::tungstenite::Message,
 >;
 
-pub mod pb {
-    include!(concat!(env!("OUT_DIR"), "/jetstream.rs"));
-}
+use crate::protobuf_message::handle_protobuf_message;
 
 pub async fn start_server(port: u16) {
     // Removed because to tls
@@ -87,14 +84,14 @@ async fn handle_connection(stream: TcpStream, addr: SocketAddr) {
                     debug!("Received binary message: {msg:?}");
                     handle_protobuf_message(&msg).await;
                 }
-                WSMessage::Close(_) => {
-                    info!("Client disconnected");
+                WSMessage::Close(frame) => {
+                    let data = frame.clone().unwrap();
+                    info!("Client disconnected: [{}] {}", data.code, data.reason);
                     notify_rust::Notification::new()
                         .summary("JetStream Device Disconnected")
                         .body(&format!("IP: {addr}"))
                         .show()
                         .unwrap();
-                    break;
                 }
                 _ => {}
             },
@@ -103,50 +100,5 @@ async fn handle_connection(stream: TcpStream, addr: SocketAddr) {
                 break;
             }
         };
-    }
-}
-
-async fn handle_protobuf_message(data: &[u8]) {
-    match pb::MessageWrapper::decode(data) {
-        Ok(wrapper) => {
-            debug!("Decoded wrapped protobuf message: {wrapper:?}");
-            match wrapper.message {
-                Some(pb::message_wrapper::Message::Notification(notif)) => {
-                    debug!("--- Notification Received ---");
-                    debug!("Create: {}", notif.create);
-                    debug!("Id:     {}", notif.id);
-                    debug!("Title:  {}", notif.title);
-                    debug!("Body:   {}", notif.body);
-                    if notif.create {
-                        let _handle = notify_rust::Notification::new()
-                        .summary(&notif.title)
-                        .body(&notif.body)
-                        .show()
-                        .unwrap();
-                    } else {
-                        // TODO close the notification with the given title and body
-                    }
-                }
-                Some(pb::message_wrapper::Message::Clipboard(cb)) => {
-                    debug!("--- Clipboard Sync ---");
-                    debug!("Content: {}", cb.content);
-                    #[cfg(target_os = "windows")]
-                    clipboard_win::set_clipboard_string(&cb.content)
-                        .expect("Failed to set clipboard content");
-
-                    #[cfg(target_os = "linux")]
-                    info!(
-                        "Clipboard sync not implemented for Linux yet. Received content: {}",
-                        cb.content
-                    );
-                }
-                None => {
-                    warn!("Received an empty MessageWrapper");
-                }
-            }
-        }
-        Err(e) => {
-            error!("Failed to decode protobuf message: {e}");
-        }
     }
 }
