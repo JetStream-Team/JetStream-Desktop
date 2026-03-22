@@ -4,6 +4,7 @@
 mod mdns;
 mod websocket;
 mod certs;
+mod protobuf_message;
 
 // const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const PORT: u16 = 8000;
