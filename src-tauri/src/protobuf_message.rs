@@ -1,7 +1,7 @@
 use std::{fs, io::Write};
 
 use arboard::Clipboard;
-use log::{debug, error, warn};
+use log::{debug, error, trace, warn};
 use prost::Message;
 use tokio::sync::Mutex;
 use lazy_static::lazy_static;
@@ -19,7 +19,7 @@ pub async fn handle_protobuf_message(data: &[u8]) {
     match pb::MessageWrapper::decode(data) {
         Ok(wrapper) => {
 
-            debug!("Decoded wrapped protobuf message: {wrapper:?}");
+            trace!("Decoded wrapped protobuf message: {wrapper:?}");
 
             match wrapper.message {
 

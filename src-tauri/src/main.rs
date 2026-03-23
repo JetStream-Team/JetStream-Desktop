@@ -18,7 +18,9 @@ async fn main() {
     let _service = mdns::start_mdns_responder("Mathew's JetStream".to_string(), PORT);
 
     // Start the jetstream server
-    websocket::start_server(PORT).await;
+    tokio::spawn(async move {
+        websocket::start_server(PORT).await;
+    });
 
     // Run the Tauri application
     jetstream_desktop_lib::run();
