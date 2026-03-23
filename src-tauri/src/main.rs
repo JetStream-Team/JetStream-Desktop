@@ -5,6 +5,7 @@ mod mdns;
 mod websocket;
 mod certs;
 mod protobuf_message;
+mod message_handlers;
 
 // const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const SERVER_NAME: &str = "Mathew's JetStream";
