@@ -19,7 +19,7 @@ message MessageWrapper {
 
 message Notification {
     bool create = 1;
-    int32 id = 2;
+    uint32 id = 2;
     string title = 3;
     string body = 4;
     bytes icon = 5;
