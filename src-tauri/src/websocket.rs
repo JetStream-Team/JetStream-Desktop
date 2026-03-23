@@ -1,4 +1,4 @@
-use log::{debug, error, info};
+use log::{debug, error, info, trace};
 // use std::collections::HashMap;
 // use crate::certs;
 // use rustls::ServerConfig;
@@ -11,6 +11,7 @@ use core::net::SocketAddr;
 use tokio::net::{TcpListener, TcpStream};
 use tokio_tungstenite::accept_async;
 use tokio_tungstenite::tungstenite::{Message as WSMessage};
+use prost::Message;
 
 #[allow(dead_code)]
 pub type WSInbox = futures_util::stream::SplitStream<tokio_tungstenite::WebSocketStream<TcpStream>>;
@@ -20,7 +21,12 @@ pub type WSOutbox = futures_util::stream::SplitSink<
     tokio_tungstenite::tungstenite::Message,
 >;
 
+use crate::{PORT, SERVER_NAME};
 use crate::protobuf_message::handle_protobuf_message;
+
+pub mod pb {
+    include!(concat!(env!("OUT_DIR"), "/jetstream.rs"));
+}
 
 pub async fn start_server(port: u16) {
     // Removed because to tls
@@ -68,6 +74,16 @@ async fn handle_connection(stream: TcpStream, addr: SocketAddr) {
     // Split the WebSocket stream into an inbox and outbox
     let (mut outbox, mut inbox) = ws_stream.split();
 
+    let identity_msg = pb::Identity {
+        name: SERVER_NAME.to_string(),
+        host: local_ip().unwrap().to_string(),
+        port: PORT as u32,
+    }.encode_to_vec();
+
+    outbox.send(WSMessage::Binary(identity_msg.into()))
+        .await.expect("Failed to send identity message");
+
+
     // Do this for every message received in the inbox
     while let Some(result) = inbox.next().await {
         match result {
@@ -81,7 +97,7 @@ async fn handle_connection(stream: TcpStream, addr: SocketAddr) {
                     handle_protobuf_message(&msg_bytes).await;
                 }
                 WSMessage::Binary(msg) => {
-                    debug!("Received binary message: {msg:?}");
+                    trace!("Received binary message: {msg:?}");
                     handle_protobuf_message(&msg).await;
                 }
                 WSMessage::Close(frame) => {

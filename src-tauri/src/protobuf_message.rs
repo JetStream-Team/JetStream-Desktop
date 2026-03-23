@@ -1,7 +1,8 @@
-use std::{fs, io::Write};
+use std::{collections::HashMap, fs, io::Write};
 
 use arboard::Clipboard;
 use log::{debug, error, trace, warn};
+use notify_rust::NotificationHandle;
 use prost::Message;
 use tokio::sync::Mutex;
 use lazy_static::lazy_static;
@@ -48,6 +49,7 @@ pub async fn handle_protobuf_message(data: &[u8]) {
                             .body(&notif.body)
                             .appname("JetStream")
                             .icon(&temp_icon_path)
+                            .action("scrcpy", "Open device")
                             .show()
                             .expect("Failed to show notification");
                     } else {
