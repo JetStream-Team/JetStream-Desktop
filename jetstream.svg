@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="108"
+   height="108"
+   viewBox="0 0 28.575 28.575001"
+   version="1.1"
+   id="svg1"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <title
+     id="title14">JetStream</title>
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient6">
+      <stop
+         style="stop-color:#06164e;stop-opacity:1;"
+         offset="0"
+         id="stop7" />
+      <stop
+         style="stop-color:#091e73;stop-opacity:1;"
+         offset="0.33585858"
+         id="stop9" />
+      <stop
+         style="stop-color:#0d2796;stop-opacity:1;"
+         offset="1"
+         id="stop8" />
+    </linearGradient>
+    <linearGradient
+       id="swatch45">
+      <stop
+         style="stop-color:#000359;stop-opacity:1;"
+         offset="0"
+         id="stop45" />
+    </linearGradient>
+    <linearGradient
+       id="swatch44"
+       gradientTransform="translate(1.5875,-1.0583334)">
+      <stop
+         style="stop-color:#179299;stop-opacity:1;"
+         offset="0"
+         id="stop44" />
+    </linearGradient>
+    <linearGradient
+       id="swatch43"
+       gradientTransform="translate(0.79375022,-0.5291666)">
+      <stop
+         style="stop-color:#e64553;stop-opacity:1;"
+         offset="0"
+         id="stop43" />
+    </linearGradient>
+    <linearGradient
+       id="swatch42">
+      <stop
+         style="stop-color:#8839ef;stop-opacity:1;"
+         offset="0"
+         id="stop42" />
+    </linearGradient>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath48">
+      <ellipse
+         style="display:inline;fill:#000359;fill-opacity:1;stroke-width:0.280964"
+         id="ellipse48"
+         cx="13.599515"
+         cy="13.160188"
+         rx="9.5249996"
+         ry="9.5250006" />
+    </clipPath>
+    <radialGradient
+       xlink:href="#linearGradient6"
+       id="radialGradient8"
+       cx="14.287499"
+       cy="14.2875"
+       fx="14.287499"
+       fy="14.2875"
+       r="9.5249996"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     id="layer1"
+     style="display:none">
+    <path
+       d="M 6.8104371,20.188432 A 9.5249996,9.5250006 0 0 0 14.2875,23.8125 9.5249996,9.5250006 0 0 0 23.730852,15.529802 c -1.125384,1.289836 -2.458097,2.411852 -4.068486,2.898531 -1.981562,0.598853 -3.781736,-0.14432 -5.282882,-0.695565 -1.501145,-0.55124 -2.698894,-0.909085 -3.589962,-0.630969 -1.0176021,0.31761 -2.6870146,1.70214 -3.9790849,3.086633 z"
+       style="display:inline;fill:#000000;fill-opacity:1;stroke-width:0.280964"
+       id="path67" />
+    <path
+       d="m 4.9325155,12.496395 c 1.0350006,-0.934657 2.195208,-1.752776 3.4819581,-2.15439 1.9787114,-0.6175869 3.7851374,0.121587 5.2890834,0.67386 1.503946,0.552273 2.711324,0.917317 3.607531,0.646472 1.169154,-0.353332 2.806919,-1.9795024 4.081922,-3.7181189 A 9.5249996,9.5250006 0 0 0 14.2875,4.7625001 9.5249996,9.5250006 0 0 0 4.9325155,12.496395 Z"
+       style="display:inline;fill:#000000;fill-opacity:1;stroke-width:0.280964"
+       id="path66" />
+  </g>
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>JetStream</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Mathew Manoj</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/4.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g56"
+     style="display:inline">
+    <ellipse
+       style="fill:url(#radialGradient8);stroke-width:0.280964"
+       id="ellipse53"
+       cx="14.287499"
+       cy="14.2875"
+       rx="9.5249996"
+       ry="9.5250006" />
+    <g
+       id="g55"
+       clip-path="url(#clipPath48)"
+       style="display:inline;fill:none;fill-opacity:1"
+       transform="translate(0.68798431,1.1273126)">
+      <path
+         style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#42e2b8;stroke-width:2.64583;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         d="m 2.6360016,21.234367 c 0,0 3.9063613,-5.535337 7.0723357,-6.523487 2.8697797,-0.895703 6.0061887,2.194033 8.8839577,1.324336 3.86378,-1.167681 7.445093,-8.6748302 7.445093,-8.6748302"
+         id="path53" />
+      <path
+         style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#f1fec2;stroke-width:2.64583;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         d="m 1.8422516,19.117699 c 0,0 3.9063614,-5.535337 7.0723357,-6.523487 2.8697807,-0.895703 6.0061897,2.194033 8.8839587,1.324336 3.86378,-1.167681 7.445093,-8.6748288 7.445093,-8.6748288"
+         id="path54" />
+      <path
+         style="display:inline;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#fb4b4e;stroke-width:2.64583;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         d="m 1.0485016,17.001033 c 0,0 3.9063614,-5.535337 7.0723357,-6.523487 2.8697797,-0.8957027 6.0061887,2.194033 8.8839577,1.324336 3.86378,-1.167681 7.445093,-8.6748296 7.445093,-8.6748296"
+         id="path55" />
+    </g>
+  </g>
+</svg>
