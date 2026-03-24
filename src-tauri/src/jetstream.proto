@@ -14,12 +14,13 @@ message MessageWrapper {
     oneof message {
         Notification notification = 1;
         Clipboard clipboard = 2;
+        Action action = 3;
     }
 }
 
 message Notification {
     bool create = 1;
-    int32 id = 2;
+    uint32 id = 2;
     string title = 3;
     string body = 4;
     bytes icon = 5;
@@ -28,3 +29,15 @@ message Notification {
 message Clipboard {
     string content = 1;
 }
+
+message Action {
+    oneof actiontype {
+        Lock lock = 1;
+        Poweroff poweroff = 2;
+        Reboot reboot = 3;
+    }
+}
+
+message Lock {}
+message Poweroff {}
+message Reboot {}
