@@ -1,8 +1,10 @@
 use log::debug;
 use lazy_static::lazy_static;
-use notify_rust::NotificationHandle;
 use std::{collections::HashMap, fs, io::Write};
 use tokio::sync::Mutex;
+
+#[cfg(any(target_os = "linux", target_os = "macos"))]
+use notify_rust::NotificationHandle;
 
 use crate::protobuf_message::pb;
 
@@ -10,6 +12,7 @@ lazy_static! {
     static ref notif_store: Mutex<HashMap<u32, NotificationHandle>> = Mutex::new(HashMap::new());
 }
 
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 pub async fn handle_notification(notif: pb::Notification) {
     let mut notif_store_guard = notif_store.lock().await;
 
@@ -67,6 +70,33 @@ pub async fn handle_notification(notif: pb::Notification) {
                 debug!("Notification not found in store");
             }
         }
+    }
+}
+
+#[cfg(target_os = "windows")]
+pub async fn handle_notification(notif: pb::Notification) {
+    debug!("--- Notification Received ---");
+    debug!("Create: {}", notif.create);
+    debug!("Id:     {}", notif.id);
+    debug!("Title:  {}", notif.title);
+    debug!("Body:   {}", notif.body);
+
+    let temp_icon_path = create_notif_icon(notif.id, &notif.icon);
+
+
+    if notif.create {
+        notify_rust::Notification::new()
+            .summary(&notif.title)
+            .body(&notif.body)
+            .appname("JetStream")
+            .icon(&temp_icon_path)
+            .action("scrcpy", "Open device")
+            .show()
+            .expect("Failed to show notification");
+    } else {
+        debug!("Notification deletion event received: {}", notif.id);
+
+        delete_notif_icon(notif.id);
     }
 }
 
