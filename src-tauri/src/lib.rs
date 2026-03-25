@@ -3,7 +3,14 @@ use tauri::{
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent}, Manager,
 };
 
-// use serde::Serialize;
+pub mod mdns;
+pub mod websocket;
+pub mod certs;
+pub mod protobuf_message;
+pub mod message_handlers;
+
+pub const SERVER_NAME: &str = "Mathew's JetStream";
+pub const PORT: u16 = 8000;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -12,7 +19,7 @@ pub fn run() {
             let quit = MenuItem::with_id(app, "quit", "Quit", true, None::<&str>)?;
             let menu = Menu::with_items(app, &[&quit])?;
 
-            let tray = TrayIconBuilder::new()
+            let tray = TrayIconBuilder::with_id("main")
                 .icon(app.default_window_icon().unwrap().clone())
                 .tooltip("Disconnected")
                 .menu(&menu)
@@ -39,37 +46,16 @@ pub fn run() {
                 .build(app)?;
 
             app.manage(tray);
+
+            let app_handle = app.handle().clone();
+            tauri::async_runtime::spawn(async move {
+                websocket::start_server(PORT, app_handle).await;
+            });
+
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![update_tray_tooltip])
+        .invoke_handler(tauri::generate_handler![])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
 
-#[tauri::command]
-fn update_tray_tooltip(
-    app: tauri::AppHandle,
-    connected: bool,
-) {
-    if let Some(tray) = app.tray_by_id("main") {
-        let msg = if connected { "Connected" } else { "Disconnected" };
-        let _ = tray.set_tooltip(Some(msg));
-    }
-}
-
-
-// #[derive(Serialize)]
-// struct Connection {
-//     device_name: String,
-//     ip_address: String,
-// }
-
-// #[tauri::command]
-// async fn get_connection() -> Connection {
-//     let connection = Connection {
-//         device_name: "Mathew's Test Device".to_string(),
-//         ip_address: "127.0.0.1".into()
-//     };
-
-//     connection
-// }
