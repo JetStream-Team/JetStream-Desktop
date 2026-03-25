@@ -8,6 +8,7 @@ use notify_rust::NotificationHandle;
 
 use crate::protobuf_message::pb;
 
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 lazy_static! {
     static ref notif_store: Mutex<HashMap<u32, NotificationHandle>> = Mutex::new(HashMap::new());
 }
