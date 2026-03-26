@@ -25,7 +25,7 @@ async fn main() {
     });
 
     // Run the Tauri application
-    // jetstream_desktop_lib::run();
+    jetstream_desktop_lib::run();
 
     loop {}
 }
