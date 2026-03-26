@@ -44,7 +44,7 @@
         width: 20rem;
         height: 100vh;
 
-        background-color: var(--m3c-surface);
+        background-color: var(--m3c-surface-container-low);
     }
 
     .contents {

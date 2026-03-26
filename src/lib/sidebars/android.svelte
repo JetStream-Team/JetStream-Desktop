@@ -86,7 +86,7 @@
 
         display: flex;
 
-        background-color: var(--m3c-surface-bright);
+        background-color: var(--m3c-surface-container-highest);
         border-radius: var(--rounding);
     }
 

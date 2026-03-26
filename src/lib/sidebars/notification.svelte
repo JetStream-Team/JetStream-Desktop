@@ -9,7 +9,7 @@
 
 <style>
     .notification {
-        background-color: var(--m3c-surface-bright);
+        background-color: var(--m3c-surface-container-high);
         border-radius: var(--rounding);
 
         width: 100%;
