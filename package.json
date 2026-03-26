@@ -1,6 +1,6 @@
 {
   "name": "jetstream-desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "type": "module",
   "scripts": {
@@ -13,19 +13,19 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@tauri-apps/api": "^2.9.1",
-    "@tauri-apps/plugin-opener": "^2.5.2",
-    "m3-svelte": "^6.0.1",
-    "vite-plugin-functions-mixins": "^0.2.2"
+    "@tauri-apps/api": "^2.10.1",
+    "@tauri-apps/plugin-opener": "^2.5.3",
+    "m3-svelte": "^7.1.2",
+    "vite-plugin-functions-mixins": "^0.4.1"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "^3.0.10",
-    "@sveltejs/kit": "^2.49.2",
-    "@sveltejs/vite-plugin-svelte": "^6.0.0",
-    "@tauri-apps/cli": "^2.9.6",
-    "svelte": "^5.46.0",
-    "svelte-check": "^4.3.4",
-    "typescript": "~5.6.3",
-    "vite": "^7.2.4"
+    "@sveltejs/kit": "^2.55.0",
+    "@sveltejs/vite-plugin-svelte": "^7.0.0",
+    "@tauri-apps/cli": "^2.10.1",
+    "svelte": "^5.55.0",
+    "svelte-check": "^4.4.5",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.3"
   }
 }
