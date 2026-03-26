@@ -1,4 +1,4 @@
-use log::{debug};
+use log::{debug, error};
 use std::process::Command;
 
 use crate::protobuf_message::pb;
@@ -19,6 +19,9 @@ pub async fn handle_action(action: pb::Action) {
                 .arg("lock-session")
                 .spawn()
                 .unwrap();
+
+            #[cfg(target_os = "macos")]
+            error!("Lock action not implemented on macOS");
         }
         Some(pb::action::Actiontype::Poweroff(_)) => {
             debug!("Received poweroff action");
@@ -31,12 +34,13 @@ pub async fn handle_action(action: pb::Action) {
                 .spawn()
                 .unwrap();
 
-
             #[cfg(target_os = "linux")]
             Command::new("systemctl")
                 .arg("poweroff")
                 .spawn()
                 .unwrap();
+
+            error!("Poweroff action not implemented on macOS");
         }
         Some(pb::action::Actiontype::Reboot(_)) => {
             debug!("Received reboot action");
@@ -54,6 +58,9 @@ pub async fn handle_action(action: pb::Action) {
                 .arg("reboot")
                 .spawn()
                 .unwrap();
+
+            #[cfg(target_os = "macos")]
+            error!("Reboot action not implemented on macOS");
         }
         None => {
             debug!("Received unknown or empty action");
