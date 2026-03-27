@@ -39,6 +39,11 @@ jobs:
           node-version: 25
           cache: 'pnpm'
 
+      - name: install protoc
+        uses: arduino/setup-protoc@v3
+        with:
+          version: "33.5"
+
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
