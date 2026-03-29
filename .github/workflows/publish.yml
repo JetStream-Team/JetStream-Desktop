@@ -38,6 +38,9 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: install pnpm
+        uses: pnpm/action-setup@v5
+
       - name: setup node
         uses: actions/setup-node@v4
         with:
@@ -57,6 +60,8 @@ jobs:
 
       - name: install frontend dependencies
         run: pnpm install
+        with:
+          version: 10
 
       - uses: tauri-apps/tauri-action@v0
         env:
