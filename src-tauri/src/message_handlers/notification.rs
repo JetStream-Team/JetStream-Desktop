@@ -1,16 +1,16 @@
 use log::debug;
 use lazy_static::lazy_static;
+#[cfg(any(target_os = "linux", target_os = "macos"))]
+use std::process::Command;
 use std::{collections::HashMap, fs, io::Write};
 use tokio::sync::Mutex;
-
-#[cfg(any(target_os = "linux", target_os = "macos"))]
-use notify_rust::NotificationHandle;
 
 use crate::protobuf_message::pb;
 
 #[cfg(any(target_os = "linux", target_os = "macos"))]
 lazy_static! {
-    static ref notif_store: Mutex<HashMap<u32, NotificationHandle>> = Mutex::new(HashMap::new());
+    // maps foreign android notification id to local dbus notification id
+    static ref notif_store: Mutex<HashMap<u32, u32>> = Mutex::new(HashMap::new());
 }
 
 #[cfg(any(target_os = "linux", target_os = "macos"))]
@@ -23,21 +23,24 @@ pub async fn handle_notification(notif: pb::Notification) {
         debug!("Id:     {}", notif.id);
         debug!("Title:  {}", notif.title);
         debug!("Body:   {}", notif.body);
+        debug!("App:   {}", notif.app);
 
         let temp_icon_path = create_notif_icon(notif.id, &notif.icon);
         let notif_store_entry = notif_store_guard.get_mut(&notif.id);
 
         match notif_store_entry {
             // Notification needs to be updated
-            Some(handle) => {
-                handle
+            Some(dbus_id) => {
+                notify_rust::Notification::new()
                     .summary(&notif.title)
                     .body(&notif.body)
                     .appname("JetStream")
                     .icon(&temp_icon_path)
                     .hint(notify_rust::Hint::SuppressSound(true))
-                    .action("scrcpy", "Open device");
-                handle.update();
+                    .action("open_device", "Open device")
+                    .id(dbus_id.clone())
+                    .show()
+                    .expect("Failed to show updated notification");
                 debug!("Notification updated");
             }
 
@@ -48,10 +51,22 @@ pub async fn handle_notification(notif: pb::Notification) {
                     .body(&notif.body)
                     .appname("JetStream")
                     .icon(&temp_icon_path)
-                    .action("scrcpy", "Open device")
+                    .action("open_device", "Open device")
                     .show()
                     .expect("Failed to show notification");
-                notif_store_guard.insert(notif.id, handle);
+                notif_store_guard.insert(notif.id, handle.id());
+
+                tokio::task::spawn_blocking(move || {
+                    handle.wait_for_action(|action| {
+                        if action == "open_device" {
+                            Command::new("scrcpy")
+                            .arg(format!("--start-app={}", notif.app))
+                            .spawn()
+                            .ok();
+                        }
+                    });
+                });
+
                 debug!("Notification created");
             }
         }
@@ -63,8 +78,12 @@ pub async fn handle_notification(notif: pb::Notification) {
 
         // Notification needs to be closed
         match notif_store_entry {
-            Some(handle) => {
-                handle.close();
+            Some(dbus_id) => {
+                notify_rust::Notification::new()
+                    .id(dbus_id)
+                    .show()
+                    .expect("Failed to get notification handle for closing")
+                    .close();
                 debug!("Notification closed");
             }
             None => {

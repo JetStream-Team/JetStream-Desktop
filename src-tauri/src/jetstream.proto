@@ -4,18 +4,19 @@ package jetstream;
 option java_package = "com.jetstream.android.proto";
 option java_multiple_files = true;
 
+message MessageWrapper {
+    oneof message {
+        Identity identity = 1;
+        Notification notification = 2;
+        Clipboard clipboard = 3;
+        Action action = 4;
+    }
+}
+
 message Identity {
     string name = 1;
     string host = 2;
     uint32 port = 3;
-}
-
-message MessageWrapper {
-    oneof message {
-        Notification notification = 1;
-        Clipboard clipboard = 2;
-        Action action = 3;
-    }
 }
 
 message Notification {
@@ -23,7 +24,8 @@ message Notification {
     uint32 id = 2;
     string title = 3;
     string body = 4;
-    bytes icon = 5;
+    string app = 5;
+    bytes icon = 6;
 }
 
 message Clipboard {

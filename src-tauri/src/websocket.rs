@@ -101,7 +101,6 @@ async fn handle_connection(stream: TcpStream, addr: SocketAddr, app_handle: taur
         .show()
         .unwrap();
 
-
     // Split the WebSocket stream into an inbox and outbox
     let (outbox, mut inbox) = ws_stream.split();
     OUTBOX.set(outbox).await;
@@ -111,9 +110,12 @@ async fn handle_connection(stream: TcpStream, addr: SocketAddr, app_handle: taur
         name: SERVER_NAME.to_string(),
         host: local_ip().unwrap().to_string(),
         port: PORT as u32,
+    };
+    let wrapper = pb::MessageWrapper {
+        message: Some(pb::message_wrapper::Message::Identity(identity_msg))
     }.encode_to_vec();
 
-    OUTBOX.send(WSMessage::Binary(identity_msg.into()))
+    OUTBOX.send(WSMessage::Binary(wrapper.into()))
         .await.expect("Failed to send identity message");
 
     // Do this for every message received in the inbox

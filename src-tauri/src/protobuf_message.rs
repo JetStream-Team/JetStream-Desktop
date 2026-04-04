@@ -14,6 +14,8 @@ pub async fn handle_protobuf_message(data: &[u8]) {
             trace!("Decoded wrapped protobuf message: {wrapper:?}");
 
             match wrapper.message {
+                // Identity Message
+                Some(pb::message_wrapper::Message::Identity(_iden)) => {}
 
                 // Notification Message
                 Some(pb::message_wrapper::Message::Notification(notif)) => {
