@@ -22,6 +22,17 @@ pub async fn handle_presentation(pres: pb::Presentation) {
             debug!("Next slide key sent");
         }
 
+        Some(pb::presentation::Actiontype::Present(_)) => {
+            let mut enigo_unlocked = ENIGO.lock().await;
+            enigo_unlocked.key(enigo::Key::Control, enigo::Direction::Press).unwrap();
+            enigo_unlocked.key(enigo::Key::Alt, enigo::Direction::Press).unwrap();
+            enigo_unlocked.key(enigo::Key::Unicode('p'), enigo::Direction::Press).unwrap();
+            enigo_unlocked.key(enigo::Key::Control, enigo::Direction::Release).unwrap();
+            enigo_unlocked.key(enigo::Key::Alt, enigo::Direction::Release).unwrap();
+            enigo_unlocked.key(enigo::Key::Unicode('p'), enigo::Direction::Release).unwrap();
+            debug!("Present slide key sent");
+        }
+
         Some(pb::presentation::Actiontype::Fullscreen(_)) => {
             ENIGO.lock().await.key(enigo::Key::F11, enigo::Direction::Click)
                 .expect("Failed to send fullscreen key");

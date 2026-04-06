@@ -49,13 +49,15 @@ message Presentation {
     oneof actiontype {
         PrevSlide prevslide = 1;
         NextSlide nextslide = 2;
-        Fullscreen fullscreen = 3;
-        Visibility visibility = 4;
+        Present present = 3;
+        Fullscreen fullscreen = 4;
+        Visibility visibility = 5;
     }
 }
 
 message PrevSlide {}
 message NextSlide {}
+message Present {}
 message Fullscreen {}
 message Visibility {}
 
