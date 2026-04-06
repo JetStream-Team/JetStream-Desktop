@@ -1,11 +1,16 @@
 use log::debug;
 use lazy_static::lazy_static;
 #[cfg(any(target_os = "linux", target_os = "macos"))]
+use prost::Message;
+#[cfg(any(target_os = "linux", target_os = "macos"))]
 use std::process::Command;
 use std::{collections::HashMap, fs, io::Write};
 use tokio::sync::Mutex;
+use tokio_tungstenite::tungstenite::Message as WSMessage;
 
 use crate::protobuf_message::pb;
+#[cfg(any(target_os = "linux", target_os = "macos"))]
+use crate::websocket::OUTBOX;
 
 #[cfg(any(target_os = "linux", target_os = "macos"))]
 lazy_static! {
@@ -59,10 +64,18 @@ pub async fn handle_notification(notif: pb::Notification) {
                 tokio::task::spawn_blocking(move || {
                     handle.wait_for_action(|action| {
                         if action == "open_device" {
+                            let wrapper = pb::MessageWrapper {
+                                message: Some(pb::message_wrapper::Message::Openapp(
+                                    pb::OpenApp {
+                                        app: notif.app.clone()
+                                    }
+                                ))
+                            }.encode_to_vec();
+                            OUTBOX.send_blocking(WSMessage::Binary(wrapper.into()))
+                                .expect("Failed to send open app message");
                             Command::new("scrcpy")
-                            .arg(format!("--start-app={}", notif.app))
-                            .spawn()
-                            .ok();
+                                .spawn()
+                                .ok();
                         }
                     });
                 });

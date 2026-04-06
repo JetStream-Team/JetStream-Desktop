@@ -45,6 +45,10 @@ impl Outbox {
             .send(msg).await
             .map_err(|e| e.to_string())
     }
+
+    pub fn send_blocking(&self, msg: WSMessage) -> Result<(), String> {
+        tokio::runtime::Handle::current().block_on(OUTBOX.send(msg))
+    }
 }
 
 pub static OUTBOX: LazyLock<Outbox> = LazyLock::new(|| Outbox(Mutex::new(None)));

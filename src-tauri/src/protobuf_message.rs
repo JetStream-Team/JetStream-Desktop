@@ -17,6 +17,9 @@ pub async fn handle_protobuf_message(data: &[u8]) {
                 // Identity Message
                 Some(pb::message_wrapper::Message::Identity(_iden)) => {}
 
+                // Open App Message
+                Some(pb::message_wrapper::Message::Openapp(_app)) => {}
+
                 // Notification Message
                 Some(pb::message_wrapper::Message::Notification(notif)) => {
                     notification::handle_notification(notif).await;

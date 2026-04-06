@@ -7,10 +7,11 @@ option java_multiple_files = true;
 message MessageWrapper {
     oneof message {
         Identity identity = 1;
-        Notification notification = 2;
-        Clipboard clipboard = 3;
-        Action action = 4;
-        Presentation presentation = 5;
+        OpenApp openapp = 2;
+        Notification notification = 3;
+        Clipboard clipboard = 4;
+        Action action = 5;
+        Presentation presentation = 6;
     }
 }
 
@@ -18,6 +19,10 @@ message Identity {
     string name = 1;
     string host = 2;
     uint32 port = 3;
+}
+
+message OpenApp {
+    string app = 1;
 }
 
 message Notification {
