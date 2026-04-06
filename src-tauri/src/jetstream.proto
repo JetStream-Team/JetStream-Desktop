@@ -10,6 +10,7 @@ message MessageWrapper {
         Notification notification = 2;
         Clipboard clipboard = 3;
         Action action = 4;
+        Presentation presentation = 5;
     }
 }
 
@@ -43,3 +44,18 @@ message Action {
 message Lock {}
 message Poweroff {}
 message Reboot {}
+
+message Presentation {
+    oneof actiontype {
+        PrevSlide prevslide = 1;
+        NextSlide nextslide = 2;
+        Fullscreen fullscreen = 3;
+        Visibility visibility = 4;
+    }
+}
+
+message PrevSlide {}
+message NextSlide {}
+message Fullscreen {}
+message Visibility {}
+

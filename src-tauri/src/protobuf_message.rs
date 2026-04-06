@@ -1,7 +1,7 @@
 use log::{error, trace, warn};
 use prost::{Message};
 
-use crate::message_handlers::{notification, clipboard, actions};
+use crate::{message_handlers::{actions, clipboard, notification, presentation}};
 
 pub mod pb {
     include!(concat!(env!("OUT_DIR"), "/jetstream.rs"));
@@ -30,6 +30,11 @@ pub async fn handle_protobuf_message(data: &[u8]) {
                 // Action Message
                 Some(pb::message_wrapper::Message::Action(action)) => {
                     actions::handle_action(action).await;
+                }
+
+                // Presentation Message
+                Some(pb::message_wrapper::Message::Presentation(presentation)) => {
+                    presentation::handle_presentation(presentation).await;
                 }
 
                 // Unknown Message

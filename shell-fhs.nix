@@ -39,6 +39,7 @@
     zlib
     xdg-utils
     gsettings-desktop-schemas
+    libxkbcommon
   ]);
 
   runScript = "nu";

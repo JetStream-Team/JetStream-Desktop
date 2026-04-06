@@ -52,3 +52,4 @@ log = "0.4.29"
 arboard = { version = "3.6.1", features = ["wayland-data-control"] }
 lazy_static = "1.5.0"
 chrono = "0.4.44"
+enigo = { version = "0.6.1", features = ["wayland"] }
